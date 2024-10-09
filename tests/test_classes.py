@@ -26,3 +26,5 @@ def test_init_2(category_init):
     assert category_init.name == "Телевизоры"
     assert category_init.description == "Современный телевизор"
     assert category_init.products == []
+    assert category_init.category_count == 1
+    assert category_init.product_count == 0
