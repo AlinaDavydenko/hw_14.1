@@ -26,3 +26,5 @@ def test_init_2(category_init):
     assert category_init.name == "Телевизоры"
     assert category_init.description == "Современный телевизор"
     assert category_init.products == []
+
+# вопросы с тестами, птест не находит ???
