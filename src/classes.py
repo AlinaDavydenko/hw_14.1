@@ -19,8 +19,8 @@ class Product:  # Create an empty class
         quantity = dict_of_products['quantity']
         return cls(name, description, price, quantity)
 
-    @set_price.setter
-    def set_price(self, price):
+    @price.setter
+    def price(self, price):
         if price < 1:
             raise ValueError('Цена не должна быть нулевая или отрицательная')
         else:
@@ -53,7 +53,7 @@ class Category:
     #     return self.products
 
     def add_product(self, new_product: Product):
-        self.products.append(new_product)
+        self.__products.append(new_product)
         Category.product_count += 1
         # Category.__products.append(new_product)
 
