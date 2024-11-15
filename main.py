@@ -1,5 +1,6 @@
 from src.classes import Category, Product
 
+
 if __name__ == "__main__":
     product1 = Product(
         "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
@@ -11,6 +12,7 @@ if __name__ == "__main__":
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
         [product1, product2, product3]
     )
+    Category.products = 'asd'
 
     print(category1.products)
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)

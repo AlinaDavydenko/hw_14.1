@@ -21,8 +21,8 @@ def create_objects_from_read_json(data):
 
 # if __name__ == '__main__':
 #     print(read_json('../data/products.json'))
-
-
+#
+#
 # if __name__ == '__main__':
 #     inf = read_json('../data/products.json')
 #     print(create_objects_from_read_json(inf))
