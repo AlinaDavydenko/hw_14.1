@@ -19,16 +19,26 @@ class Product:  # Create an empty class
         quantity = dict_of_products['quantity']
         return cls(name, description, price, quantity)
 
+    @property
+    def price(self):
+        return self.__price
+
     @price.setter
     def price(self, price):
+        """ сеттер, который проверяет цену на корректность """
         if price < 1:
             raise ValueError('Цена не должна быть нулевая или отрицательная')
-        else:
-            self.__price = price
+        elif price > 0 and self.__price < price:
+            print('Цена выше предыдущей: Y / N')
+            answer = input().lower()
+            if answer == 'y':
+                self.__price = price
 
-    @property
-    def get_price(self):
-        return self.__price
+        elif self.__price > price:
+            print('Цена ниже предыдущей: Y / N')
+            answer = input().lower()
+            if answer == 'y':
+                self.__price = price
 
 
 class Category:
@@ -48,9 +58,9 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
-    # @property
-    # def products(self):
-    #     return self.products
+    @property
+    def products(self):
+        return self.__products
 
     def add_product(self, new_product: Product):
         self.__products.append(new_product)
@@ -64,15 +74,3 @@ class Category:
         for product in self.__products:
             list_of_product += f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n'
         return list_of_product
-
-
-# new_product = Product.new_product(
-#         {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
-#          "quantity": 5})
-
-# print(Category.products)   # Такого нет
-
-# print(new_product.name)
-# print(new_product.description)
-# print(new_product.price)
-# print(new_product.quantity)
