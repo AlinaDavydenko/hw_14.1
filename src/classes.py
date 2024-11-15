@@ -8,7 +8,7 @@ class Product:  # Create an empty class
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
     @classmethod
@@ -19,12 +19,23 @@ class Product:  # Create an empty class
         quantity = dict_of_products['quantity']
         return cls(name, description, price, quantity)
 
+    @set_price.setter
+    def set_price(self, price):
+        if price < 1:
+            raise ValueError('Цена не должна быть нулевая или отрицательная')
+        else:
+            self.__price = price
+
+    @property
+    def get_price(self):
+        return self.__price
+
 
 class Category:
     """ class for categories """
     name: str
     description: str
-    __products: list
+    products: list
 
     category_count = 0
     product_count = 0
@@ -32,7 +43,7 @@ class Category:
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = products
 
         Category.category_count += 1
         Category.product_count += len(products)
@@ -46,8 +57,22 @@ class Category:
         Category.product_count += 1
         # Category.__products.append(new_product)
 
+    @property
     def product_list(self):
+        """ геттер, который возвращает список продуктов """
         list_of_product = ''
-        for product in self.products:
-            list_of_product += f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.'
+        for product in self.__products:
+            list_of_product += f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n'
         return list_of_product
+
+
+# new_product = Product.new_product(
+#         {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
+#          "quantity": 5})
+
+# print(Category.products)   # Такого нет
+
+# print(new_product.name)
+# print(new_product.description)
+# print(new_product.price)
+# print(new_product.quantity)
