@@ -24,6 +24,7 @@ def product_method():
     return new_product
 
 
+# тестируем функцию new_product
 def test_new_product(product_method):
     assert product_method.name == "Samsung Galaxy S23 Ultra"
     assert product_method.description == "256GB, Серый цвет, 200MP камера"
