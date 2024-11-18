@@ -13,16 +13,17 @@ class Product:  # Create an empty class
 
     @classmethod
     def new_product(cls, dict_of_products):
-        for element in Category.product:
+        print(Category.products)
+        for element in Category.__products:
             if dict_of_products['name'] == element['name']:
-                quantity = dict_of_products['quantity'] + Category.product['quantity']
+                quantity = dict_of_products['quantity'] + Category.products['quantity']
                 cls.quantity = quantity
             else:
                 cls.quantity = dict_of_products['quantity']
         name = dict_of_products['name']
         description = dict_of_products['description']
         price = dict_of_products['price']
-        # quantity = dict_of_products['quantity']
+        quantity = dict_of_products['quantity']
         return cls(name, description, price, quantity)
 
     @property
@@ -51,8 +52,9 @@ class Category:
     """ class for categories """
     name: str
     description: str
-    products: list
+    __products: list
 
+    __products = []
     category_count = 0
     product_count = 0
 
@@ -68,10 +70,10 @@ class Category:
     def products(self):
         return self.__products
 
-    def add_product(self, new_product: Product):
-        self.__products.append(new_product)
+    @staticmethod
+    def add_product(new_product: Product):
+        Category.__products.append(new_product)
         Category.product_count += 1
-        # Category.__products.append(new_product)
 
     @property
     def product_list(self):
@@ -95,15 +97,16 @@ if __name__ == "__main__":
         [product1, product2, product3]
     )
 
-    # print(category1.products)
+    print(category1.products)
     product4 = Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)
     category1.add_product(product4)
-    # print(category1.products)
+    print(category1.products)
     print(category1.product_count)
 
     new_product = Product.new_product(
         {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
          "quantity": 5})
+    print(Category.add_product(new_product))
     print(new_product.name)
     print(new_product.description)
     print(new_product.price)
