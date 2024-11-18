@@ -16,25 +16,22 @@ class Product:  # Create an empty class
         return self.__price
 
     @classmethod
-    def new_product(cls, dict_of_products: dict):
-        products_list = [Category.products]
+    def new_product(cls, dict_of_product: dict):
+        products_list = Category.get_product()
         for product in products_list:
-            if dict_of_products['name'] == product:
-                quantity = dict_of_products['quantity'] + Category.products['quantity']
+            if dict_of_product['name'] in product.name:
+                quantity = dict_of_product['quantity'] + product.quantity
                 cls.quantity = quantity
             else:
-                cls.quantity = dict_of_products['quantity']
+                cls.quantity = dict_of_product['quantity']
         for product in products_list:
-            max_price = max(dict_of_products['price'], product['price'])
-            cls.__price = max_price
-        cls.name = dict_of_products['name']
-        cls.description = dict_of_products['description']
-        # cls.__price = dict_of_products['price']
-        cls.quantity = dict_of_products['quantity']
-
-    @property
-    def price(self):
-        return self.__price
+            if dict_of_product['name'] == product.name:
+                max_price = max(dict_of_product['price'], product.price)
+                cls.__price = max_price
+        cls.name = dict_of_product['name']
+        cls.description = dict_of_product['description']
+        cls.quantity = dict_of_product['quantity']
+        return Product(cls.name, cls.description, cls.quantity, cls.price)
 
     @price.setter
     def price(self, price):
@@ -72,8 +69,8 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
-    @property
-    def product(self):
+    @staticmethod
+    def get_product():
         return Category.__products
 
     @staticmethod
