@@ -39,13 +39,13 @@ class Product:  # Create an empty class
         if price < 1:
             raise ValueError('Цена не должна быть нулевая или отрицательная')
         elif price > 0 and self.__price < price:
-            print('Цена выше предыдущей: Y / N')
+            print('Цена будет выше предыдущей: Y / N')
             answer = input().lower()
             if answer == 'y':
                 self.__price = price
 
         elif self.__price > price:
-            print('Цена ниже предыдущей: Y / N')
+            print('Цена будет ниже предыдущей: Y / N')
             answer = input().lower()
             if answer == 'y':
                 self.__price = price
