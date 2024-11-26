@@ -11,6 +11,15 @@ class Product:  # Create an empty class
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        """ магический метод, который возвращает объект в читабильном виде """
+        return f'{self.name}, {self.price} руб. Остаток: {self.quantity} шт.'
+
+    def __add__(self, other):
+        """ функция выводит полную стоимость всех товаров на складе """
+        all_sum = self.quantity * self.price + other.quantity * other.price
+        return f'Стоимость всех товаров на складе: {all_sum}'
+
     @property
     def price(self):
         return self.__price
@@ -69,6 +78,13 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
+    def __str__(self):
+        """ магический метод, который возвращает объект в читабильном виде """
+        sum_of_products = 0
+        for product in Category.__products:
+            sum_of_products += product.quantity
+        return f'{self.name}, количество продуктов: {sum_of_products} шт.'
+
     @staticmethod
     def get_product():
         return Category.__products
@@ -85,3 +101,23 @@ class Category:
         for product in Category.__products:
             list_of_products.append(f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n')
         return list_of_products
+
+
+class TaskIteration:
+    """ дополнительный класс для перебора продуктов """
+    list_of_products = Category.get_product()
+
+    def __init__(self, list_of_products):
+        self.product_list = list_of_products
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index < len(Category.get_product()):
+            product = self.list_of_products[self.index]
+            self.index += 1
+            return product
+        else:
+            raise StopIteration
