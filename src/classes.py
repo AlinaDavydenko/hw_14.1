@@ -17,8 +17,10 @@ class Product:  # Create an empty class
 
     def __add__(self, other):
         """ функция выводит полную стоимость всех товаров на складе """
-        all_sum = self.quantity * self.price + other.quantity * other.price
-        return f'Стоимость всех товаров на складе: {all_sum}'
+        if type(self) is type(other):  # теперь программа складывает все товары одного класса Product
+            all_sum = self.quantity * self.price + other.quantity * other.price
+            return f'Стоимость всех товаров на складе: {all_sum}'
+        raise TypeError
 
     @property
     def price(self):
@@ -89,10 +91,14 @@ class Category:
     def get_product():
         return Category.__products
 
+# Корректировка метода add_product с использованием проверок добавления продуктов в категории (задание 3)
     @staticmethod
     def add_product(new_product: Product):
-        Category.__products.append(new_product)
-        Category.product_count += 1
+        if isinstance(new_product, Product):
+            Category.__products.append(new_product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self) -> list[str]:
@@ -121,3 +127,24 @@ class TaskIteration:
             return product
         else:
             raise StopIteration
+
+
+# Для магазина необходимо выделить две категории товаров и создать под них классы
+
+class Smartphone(Product):
+    """ смартфон """
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """ трава газонная """
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
