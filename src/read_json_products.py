@@ -1,20 +1,24 @@
 import json
 
-from src.classes import Product, Category
+from src.classes import Category, Product
 
 
 def read_json(path: str) -> dict:
-    """ for read json file """
-    with open(path, 'r', encoding='utf-8') as file:
+    """for read json file"""
+    with open(path, "r", encoding="utf-8") as file:
         data = json.load(file)
         return data
 
 
 def create_objects_from_read_json(data):
-    """ the function reads data from the function read_json and creates objects """
+    """the function reads data from the function read_json and creates objects"""
     categories = []
     products = []
-    [products.append(Product(**product)) for category in data for product in category['products']]
+    [
+        products.append(Product(**product))
+        for category in data
+        for product in category["products"]
+    ]
     [categories.append(Category(**category)) for category in data]
     return categories, products
 

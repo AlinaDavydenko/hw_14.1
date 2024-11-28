@@ -1,5 +1,6 @@
 import pytest
-from src.classes import Category, Product
+
+from src.classes import Category, LawnGrass, Product, Smartphone
 
 
 # testing of class Product
@@ -18,8 +19,13 @@ def test_init_1(product_init):
 @pytest.fixture
 def product_method():
     new_product = Product.new_product(
-        {"name": "Samsung Galaxy S23 Ultra", "description": "256GB, Серый цвет, 200MP камера", "price": 180000.0,
-         "quantity": 5})
+        {
+            "name": "Samsung Galaxy S23 Ultra",
+            "description": "256GB, Серый цвет, 200MP камера",
+            "price": 180000.0,
+            "quantity": 5,
+        }
+    )
     return new_product
 
 
@@ -27,7 +33,7 @@ def product_method():
 # тестирование str
 def test_str_method(product_init):
     product1 = product_init
-    assert str(product1) == 'Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.'
+    assert str(product1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
 
 
 @pytest.fixture
@@ -44,7 +50,7 @@ def product_2():
 
 # тестирование add
 def test_add_products(product_1, product_2):
-    assert product_1 + product_2 == 'Стоимость всех товаров на складе: 2580000.0'
+    assert product_1 + product_2 == "Стоимость всех товаров на складе: 2580000.0"
 
 
 # testing of class Category
@@ -64,13 +70,9 @@ def test_init_2(category_init):
 
 @pytest.fixture
 def all_products():
-    product1 = Product(
-        "Samsung", "Серый цвет", 18, 5)
+    product1 = Product("Samsung", "Серый цвет", 18, 5)
 
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство",
-        [product1])
+    category1 = Category("Смартфоны", "Смартфоны, как средство", [product1])
     return category1
 
 
@@ -83,4 +85,27 @@ def test_add_product(all_products):
 # тестирование магических методов
 def test_str_for_categories(all_products):
     products = all_products
-    assert str(products) == 'Смартфоны, количество продуктов: 5 шт.'
+    assert str(products) == "Смартфоны, количество продуктов: 5 шт."
+
+
+# тестирование классов Smartphone, LawnGrass
+@pytest.fixture
+def smartphone_product():
+    return Smartphone("Iphone", "Black", 1, "1", "2", "3", "4", "5")
+
+
+@pytest.fixture
+def lawngrass_product():
+    return LawnGrass("1", "2", 3, 4, "5", 6, "7")
+
+
+def test_smartphone_product(smartphone_product):
+    sm_pr = smartphone_product
+    assert sm_pr.name == "Iphone"
+    assert sm_pr.price == 1
+
+
+def test_lawngrass_product(lawngrass_product):
+    lg_pr = lawngrass_product
+    assert lg_pr.price == 3
+    assert lg_pr.quantity == 4

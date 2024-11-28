@@ -1,4 +1,4 @@
-import psycopg2
+# import psycopg2
 
 # подключение к базе данных
 # connection = psycopg2.connect(
