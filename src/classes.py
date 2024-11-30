@@ -1,4 +1,7 @@
-class Product:  # Create an empty class
+from src.classes_abc import BaseProduct
+
+
+class Product(BaseProduct):  # Create an empty class
     """class for products"""
 
     name: str
@@ -162,18 +165,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-
-# домашняя работа 16.2
-# 1
-# базовый абстрактный класс с именем BaseProduct, который станет родительским для класса продуктов
-
-
-# 2
-# класс-миксин, который будет при создании объекта, то есть при работе метода __init__,
-# печатать в консоль информацию о том, от какого класса и с какими параметрами был создан объект.
-
-
-# exctra
-# класс «Заказ», в котором будет ссылка на то, какой товар был куплен,
-# количество купленного товара, а также итоговая стоимость
