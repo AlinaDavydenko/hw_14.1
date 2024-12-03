@@ -91,7 +91,14 @@ def test_str_for_categories(all_products):
 # тестирование классов Smartphone, LawnGrass
 @pytest.fixture
 def smartphone_product():
-    return Smartphone("Iphone", "Black", 1, "1", "2", "3", "4", "5")
+    return Smartphone("Iphone", "Black", 1, "1", "2", "3",
+                      "4", "5")
+
+
+@pytest.fixture
+def smartphone_product_1():
+    return Smartphone("Iphone", "Black", 2, "1", "2", "3",
+                      "4", "5")
 
 
 @pytest.fixture
@@ -99,10 +106,28 @@ def lawngrass_product():
     return LawnGrass("1", "2", 3, 4, "5", 6, "7")
 
 
+@pytest.fixture
+def lawngrass_product_1():
+    return LawnGrass("1", "2", 7, 4, "5", 6, "7")
+
+
 def test_smartphone_product(smartphone_product):
     sm_pr = smartphone_product
     assert sm_pr.name == "Iphone"
     assert sm_pr.price == 1
+
+
+# тестирование абстрактного класса
+def test_add_sm(smartphone_product, smartphone_product_1):
+    product_1 = smartphone_product
+    product_2 = smartphone_product_1
+    assert product_1 + product_2 == 3
+
+
+def test_add_lawn(lawngrass_product, lawngrass_product_1):
+    pr_1 = lawngrass_product
+    pr_2 = lawngrass_product_1
+    assert pr_1 + pr_2 == 10
 
 
 def test_lawngrass_product(lawngrass_product):

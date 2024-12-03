@@ -1,7 +1,8 @@
-from src.classes_abc import BaseProduct
+from src.abstract_classes import BaseProduct
+from src.print_mixin import MixinProduct
 
 
-class Product(BaseProduct):  # Create an empty class
+class Product(BaseProduct, MixinProduct):  # Create an empty class
     """class for products"""
 
     name: str
@@ -14,6 +15,7 @@ class Product(BaseProduct):  # Create an empty class
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
         """магический метод, который возвращает объект в читабильном виде"""
@@ -154,6 +156,13 @@ class Smartphone(Product):
         self.memory = memory
         self.color = color
 
+    def __add__(self, other):
+        if type(other) is __class__:
+            summ = self.price + other.price
+            return summ
+        else:
+            raise TypeError
+
 
 class LawnGrass(Product):
     """трава газонная"""
@@ -165,3 +174,10 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
+    def __add__(self, other):
+        if type(other) is __class__:
+            summ = self.price + other.price
+            return summ
+        else:
+            raise TypeError
