@@ -14,7 +14,10 @@ class Product(BaseProduct, MixinProduct):  # Create an empty class
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity > 0:
+            self.quantity = quantity
+        else:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         super().__init__()
 
     def __str__(self):
@@ -50,7 +53,7 @@ class Product(BaseProduct, MixinProduct):  # Create an empty class
         cls.name = dict_of_product["name"]
         cls.description = dict_of_product["description"]
         cls.quantity = dict_of_product["quantity"]
-        return Product(cls.name, cls.description, cls.quantity, cls.price)
+        return Product(cls.name, cls.description, cls.quantity, cls.__price)
 
     @price.setter
     def price(self, price):
@@ -118,6 +121,15 @@ class Category:
                 f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
             )
         return list_of_products
+
+    @staticmethod
+    def middle_price():
+        try:
+            price_of_product = [element.price for element in Category.__products]
+            middel = sum(price_of_product) / len(price_of_product)
+            return f'Средняя цена всех товаров: {middel}'
+        except ZeroDivisionError:
+            return 0
 
 
 class TaskIteration:
