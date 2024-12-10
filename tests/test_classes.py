@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, Product
+from src.classes import Category, LawnGrass, Product, Smartphone, BaseProduct
 
 
 # testing of class Product
@@ -16,6 +16,43 @@ def test_init_1(product_init):
     assert product_init.quantity == 5
 
 
+@pytest.fixture
+def product_method():
+    new_product = Product.new_product(
+        {
+            "name": "Samsung Galaxy S23 Ultra",
+            "description": "256GB, Серый цвет, 200MP камера",
+            "price": 180000.0,
+            "quantity": 5,
+        }
+    )
+    return new_product
+
+
+# тестирование магических методов
+# тестирование str
+def test_str_method(product_init):
+    product1 = product_init
+    assert str(product1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+@pytest.fixture
+def product_1():
+    product1 = Product("Samsung", "Серый цвет", 180000.0, 5)
+    return product1
+
+
+@pytest.fixture
+def product_2():
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    return product2
+
+
+# тестирование add
+def test_add_products(product_1, product_2):
+    assert product_1 + product_2 == "Стоимость всех товаров на складе: 2580000.0"
+
+
 # testing of class Category
 @pytest.fixture
 def category_init():
@@ -29,3 +66,105 @@ def test_init_2(category_init):
 
     assert category_init.category_count == 1
     assert category_init.product_count == 0
+
+
+@pytest.fixture
+def all_products():
+    product1 = Product("Samsung", "Серый цвет", 18, 5)
+
+    category1 = Category("Смартфоны", "Смартфоны, как средство", [product1])
+    return category1
+
+
+def test_add_product(all_products):
+    product4 = Product("QLED", "Фоновая подсветка", 12, 7)
+    all_products.add_product(product4)
+    assert Category.product_count == 2
+
+
+# тестирование магических методов
+def test_str_for_categories(all_products):
+    products = all_products
+    assert str(products) == "Смартфоны, количество продуктов: 5 шт."
+
+
+# тестирование классов Smartphone, LawnGrass
+@pytest.fixture
+def smartphone_product():
+    return Smartphone("Iphone", "Black", 1, 1, "2", "3",
+                      "4", "5")
+
+
+@pytest.fixture
+def smartphone_product_1():
+    return Smartphone("Iphone", "Black", 2, 1, "2", "3",
+                      "4", "5")
+
+
+@pytest.fixture
+def lawngrass_product():
+    return LawnGrass("1", "2", 3, 4, "5", 6, "7")
+
+
+@pytest.fixture
+def lawngrass_product_1():
+    return LawnGrass("1", "2", 7, 4, "5", 6, "7")
+
+
+def test_smartphone_product(smartphone_product):
+    sm_pr = smartphone_product
+    assert sm_pr.name == "Iphone"
+    assert sm_pr.price == 1
+    assert  sm_pr.quantity == 1
+
+
+# тестирование абстрактного класса
+def test_add_sm(smartphone_product, smartphone_product_1):
+    product_1 = smartphone_product
+    product_2 = smartphone_product_1
+    assert product_1 + product_2 == 3
+
+
+def test_add_lawn(lawngrass_product, lawngrass_product_1):
+    pr_1 = lawngrass_product
+    pr_2 = lawngrass_product_1
+    assert pr_1 + pr_2 == 10
+
+
+def test_lawngrass_product(lawngrass_product):
+    lg_pr = lawngrass_product
+    assert lg_pr.price == 3
+    assert lg_pr.quantity == 4
+
+
+def test_base_product():
+    class Employee(BaseProduct):
+
+        def __init__(self, name, surname, pay):
+            self._name = name
+            self.__surname = surname
+            self.pay = pay
+
+        def __add__(self, other):
+            return self.pay + other.pay
+
+    emp_1 = Employee("Ivan", "Ivanov", 50_000)
+    emp_2 = Employee("Nurlan", "Grachev", 100_000)
+
+    assert emp_1 + emp_2 == 150_000
+
+
+def test_mixin_product(capsys):
+    Product("apples", "Fresh apples", 7.5, 15)
+
+    message = capsys.readouterr()
+    assert message.out.strip() == "Product(apples, Fresh apples, 7.5, 15)"
+
+
+def test_middle_price():
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0,
+                       5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+
+    category1 = Category("Смартфоны", "Категория смартфонов", [product1, product2])
+    assert category1.middle_price() == 'Средняя цена всех товаров: 195000.0'
