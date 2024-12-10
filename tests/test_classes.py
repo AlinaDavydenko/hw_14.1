@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone
+from src.classes import Category, LawnGrass, Product, Smartphone, BaseProduct
 
 
 # testing of class Product
@@ -91,13 +91,13 @@ def test_str_for_categories(all_products):
 # тестирование классов Smartphone, LawnGrass
 @pytest.fixture
 def smartphone_product():
-    return Smartphone("Iphone", "Black", 1, "1", "2", "3",
+    return Smartphone("Iphone", "Black", 1, 1, "2", "3",
                       "4", "5")
 
 
 @pytest.fixture
 def smartphone_product_1():
-    return Smartphone("Iphone", "Black", 2, "1", "2", "3",
+    return Smartphone("Iphone", "Black", 2, 1, "2", "3",
                       "4", "5")
 
 
@@ -115,6 +115,7 @@ def test_smartphone_product(smartphone_product):
     sm_pr = smartphone_product
     assert sm_pr.name == "Iphone"
     assert sm_pr.price == 1
+    assert  sm_pr.quantity == 1
 
 
 # тестирование абстрактного класса
@@ -134,3 +135,36 @@ def test_lawngrass_product(lawngrass_product):
     lg_pr = lawngrass_product
     assert lg_pr.price == 3
     assert lg_pr.quantity == 4
+
+
+def test_base_product():
+    class Employee(BaseProduct):
+
+        def __init__(self, name, surname, pay):
+            self._name = name
+            self.__surname = surname
+            self.pay = pay
+
+        def __add__(self, other):
+            return self.pay + other.pay
+
+    emp_1 = Employee("Ivan", "Ivanov", 50_000)
+    emp_2 = Employee("Nurlan", "Grachev", 100_000)
+
+    assert emp_1 + emp_2 == 150_000
+
+
+def test_mixin_product(capsys):
+    Product("apples", "Fresh apples", 7.5, 15)
+
+    message = capsys.readouterr()
+    assert message.out.strip() == "Product(apples, Fresh apples, 7.5, 15)"
+
+
+def test_middle_price():
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0,
+                       5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+
+    category1 = Category("Смартфоны", "Категория смартфонов", [product1, product2])
+    assert category1.middle_price() == 'Средняя цена всех товаров: 195000.0'
